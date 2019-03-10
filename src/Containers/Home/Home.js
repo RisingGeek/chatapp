@@ -3,26 +3,17 @@ import firebase from '../../Firebase/firebase';
 import 'firebase/database';
 import UserComponent from '../../Components/Home/UserComponent';
 import { connect } from 'react-redux';
+import axios from 'axios';
+
 
 class Home extends Component {
     state = {
         users: []
     }
     componentDidMount() {
-        var ref = firebase.database().ref('/users');
-        ref.once('value').then(snapshot => {
-            snapshot.forEach(data => {
-                if(data.val().token !== this.props.token) {
-                    this.setState({
-                        ...this.state,
-                        users: this.state.users.concat({
-                            token: data.val().token,
-                            username: data.val().username, 
-                            photo: data.val().photo
-                        })
-                    });
-            }
-            })
+        axios.get('http://localhost:5001/getusers')
+        .then(response => {
+            this.setState({ users: response.data.users });
         })
     }
     render() {
