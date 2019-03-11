@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 app.use(cors());
 var indexRouter = require('./routes/index');
+var chatRouter = require('./routes/chat');
 const PORT = process.env.PORT || 5001;
 
 app.use(bodyParser.json());
@@ -12,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/chat', chatRouter);
 
 var socketIO = require('socket.io');
 const server = app.listen(PORT,() => console.log('server started on port',PORT));

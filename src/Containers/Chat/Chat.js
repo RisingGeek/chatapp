@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { socket, connectSocket, emitMessage, listenMessage } from '../../api';
+import axios from 'axios';
 
 class Chat extends Component {
     state = {
@@ -9,16 +10,30 @@ class Chat extends Component {
     }
     componentDidMount()  {
         this.setState({ isMounted: true });
+        axios.get(`http://localhost:5001/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
+        .then(response => {
+            console.log(response)
+            this.setState({ chats: response.data.chats });
+        })
     }
     componentDidUpdate(prevProps) {
         if(prevProps!==this.props) {
+            axios.get(`http://localhost:5001/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
+            .then(response => {
+                console.log(response)
+                this.setState({ chats: response.data.chats });
+            })
             connectSocket(this.props.username);
             socket.on(this.props.username, result => {
-                console.log(result);
-                this.setState({
-                    ...this.state,
-                    chats: this.state.chats.concat({from: result.from, to: result.to, message: result.message})
-                });
+                if(result.from === this.props.username || result.from === this.props.match.params.id.replace(/-/g,' ')) {
+                    this.setState({
+                        ...this.state,
+                        chats: this.state.chats.concat({
+                            from: result.from, 
+                            to: result.to, 
+                            message: result.message})
+                    });
+                }
             })
         }
     }
@@ -35,7 +50,7 @@ class Chat extends Component {
                 {/* <p>{this.state.data.from}: {this.state.data.message}</p> */}
                 {
                     this.state.chats.map((chat,i) => (
-                        <p key={i}>{chat.from}: {chat.message}</p>
+                        <p key={i}>{chat.from===this.props.username?'You':chat.from}: {chat.message}</p>
                     ))
                 }
             </div>
