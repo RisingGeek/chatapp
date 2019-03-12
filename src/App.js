@@ -9,11 +9,17 @@ import Chat from './Containers/Chat/Chat';
 import { connect } from 'react-redux'; 
 import firebase from './Firebase/firebase';
 import 'firebase/auth';
-import { connectSocket } from './api';
+import { socket, connectSocket } from './api';
 class App extends Component {
   componentDidUpdate(prevProps) {
     if(this.props!==prevProps) {
-      connectSocket(this.props.username); 
+      console.log('yo')
+      connectSocket(this.props.username);
+      if(socket) {
+        socket.on('onlineusers', connectedUsers => {
+            localStorage.setItem('connectedUsers', Object.keys(connectedUsers));
+        })
+      } 
     }
   }
   logout = () => {
@@ -25,6 +31,7 @@ class App extends Component {
     }).catch(error => {
       console.log(error);
     })
+    localStorage.clear();
   }
   render() {
     return (
@@ -46,15 +53,20 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     loggedIn: state.loggedIn,
-    username: state.username
+    username: state.username,
+    //connectedUsers: state.connectedUsers
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     logoutUser: () => {
-      dispatch({ type: 'LOGOUT'} );
-    }
+      dispatch({ type: 'LOGOUT'});
+    },
+    // updateConnectedUsers: (connectedUsers) => {
+    //   //console.log(connectedUsers)
+    //   dispatch({type: 'CONNECTED', payload: connectedUsers})
+    // }
   }
 }
 

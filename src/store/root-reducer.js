@@ -2,7 +2,8 @@ const initialState = {
     loggedIn: false,
     token: null,
     username: null,
-    photo: null
+    photo: null,
+    //connectedUsers: []
 }
 
 const rootReducer = (state=initialState, action) => {
@@ -22,7 +23,13 @@ const rootReducer = (state=initialState, action) => {
                 token: null,
                 username: null,
                 photo: null
-            }
+            };
+            // case 'CONNECTED':
+            // return {
+            //     ...state,
+            //     ...state.connectedUsers,
+            //     connectedUsers: action.payload
+            // }
         default:
             return state;
     }

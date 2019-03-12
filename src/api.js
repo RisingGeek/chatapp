@@ -12,7 +12,7 @@ function connectSocket(username) {
 function emitMessage(fromValue, toValue, messageValue) {
     axios.post(`http://localhost:5001/chat/addchat?from=${fromValue}&to=${toValue}&message=${messageValue}`)
     .then(response => {
-        console.log(response);
+        //console.log(response);
         socket.emit('private', {
             from: fromValue,
             to: toValue,

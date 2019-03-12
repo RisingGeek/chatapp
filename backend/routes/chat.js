@@ -49,16 +49,23 @@ router.get('/getchats', (req,res) => {
     console.log(req.query)
     let from = req.query.from;
     let to = req.query.to;
-    Chat.findOne({
-        $or: [
-            { $and: [{userOne: from}, {userTwo: to}] }, 
-            { $and: [{userOne: to, userTwo: from}] }
-        ]
-    }).then(result => {
-        res.send({ chats: result.chat });
-    }).catch(err => {
-        console.log('error')
-    })
+    if(from && to) {
+        Chat.findOne({
+            $or: [
+                { $and: [{userOne: from}, {userTwo: to}] }, 
+                { $and: [{userOne: to, userTwo: from}] }
+            ]
+        }).then(result => {
+            if(result) {
+                res.send({ chats: result.chat });
+            }
+        }).catch(err => {
+            console.log('error',err)
+        })
+    }
+    else {
+        res.send({ chats: [] });
+    }
 })
 
 module.exports = router;

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const NavbarComponent = (props) => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <Link to={{pathname: '/'}} className="navbar-brand" href="#">Navbar</Link>
+            <Link to={{pathname: '/'}} className="navbar-brand" href="#">Chat App</Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>

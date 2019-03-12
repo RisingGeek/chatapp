@@ -5,6 +5,7 @@ import 'firebase/auth';
 import 'firebase/database';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { socket } from '../../api';
 
 class Signup extends Component {
     signup = () => {
@@ -13,7 +14,6 @@ class Signup extends Component {
                 var token = result.credential.accessToken;
                 var user = result.user;
                 this.props.loginUser( {token: token, username: user.displayName, photo: user.photoURL } );
-                this.props.history.push('/');
                 
                 var ref=firebase.database().ref();
                 var usersRef=ref.child('users');
@@ -25,6 +25,7 @@ class Signup extends Component {
                 axios.post(`http://localhost:5001/adduser?username=${user.displayName}&photo=${user.photoURL}`)
                 .then(res => {
                     console.log(res.data);
+                    this.props.history.push('/');
                 })
                 console.log(this.props.username)
             }).catch((error) => {
