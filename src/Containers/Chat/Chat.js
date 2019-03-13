@@ -1,73 +1,109 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { socket, connectSocket, emitMessage, listenMessage } from '../../api';
+import { socket, emitMessage } from '../../api';
 import axios from 'axios';
+import firebase from '../../Firebase/firebase';
+import LoaderComponent from '../../Components/Loader/LoaderComponent';
+import ChatComponent from '../../Components/Chat/ChatComponent';
 
 class Chat extends Component {
     state = {
         message: '',
-        chats: []
+        chats: [],
+        sendPhotoLoader: false,
+        disabledSend: false,
+        disabledPhoto: false,
+        isMounted: true
     }
     componentDidMount()  {
-        this.setState({ isMounted: true });
-        //console.log(this.props.username)
         if(this.props.username) {
-            axios.get(`http://localhost:5001/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
+            //Get all the chats
+            this.state.isMounted && axios.get(`/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
             .then(response => {
-                console.log(response)
                 this.setState({ chats: response.data.chats });
             })
         }
     }
     componentDidUpdate(prevProps) {
         if(prevProps!==this.props) {
-            axios.get(`http://localhost:5001/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
+            //Get all the chats
+            this.state.isMounted && axios.get(`/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
             .then(response => {
-                //console.log(response)
                 this.setState({ chats: response.data.chats });
             })
-            //console.log('component update')
-            //connectSocket(this.props.username);
         }
         if(socket) {
-        socket.on(this.props.username, result => {
-            console.log('socket received on front end')
-            if(result.from === this.props.username || result.from === this.props.match.params.id.replace(/-/g,' ')) {
-                axios.get(`http://localhost:5001/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
-            .then(response => {
-                console.log(response)
-                this.setState({ chats: response.data.chats });
+            //Message received from backend socket
+            this.state.isMounted && socket.on(this.props.username, result => {
+                if(result.from === this.props.username || result.from === this.props.match.params.id.replace(/-/g,' ')) {
+                    //Get all the chats
+                    this.state.isMounted && axios.get(`/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
+                    .then(response => {
+                        this.setState({
+                            chats: response.data.chats, 
+                            sendPhotoLoader: false, 
+                            disabledSend: false ,
+                            disabledPhoto: false
+                        });
+                        let chat = document.querySelector('#chat');
+                        if(chat) {
+                            chat.scrollTop = chat.scrollHeight;
+                        }
+                    })
+                }
             })
-            }
-            else {
-                console.log('no')
-            }
+        }
+    }
+    //Send message
+    sendMessage = () => {
+        //Emit message to backend socket
+        this.state.isMounted && emitMessage(this.props.username, this.props.match.params.id.replace(/-/g,' '), this.state.message);
+        this.setState({ message: '', sendPhotoLoader: true, disabledSend: true });
+    }
+    //Upload image to Firebase Storage
+    uploadFile = (e) => {
+        //Firebase Storage Reference
+        var storageRef = firebase.storage().ref(e.target.files[0].name);
+        this.setState({ sendPhotoLoader: true, disabledSend: true, disabledPhoto: true });
+        this.state.isMounted && storageRef.put(e.target.files[0]).then(snapshot => {
+            //Get download URL
+            snapshot.ref.getDownloadURL().then(url => {
+                this.setState({ message: url, sendPhotoLoader: false }, () => {
+                    this.sendMessage();
+                })
+            }).catch(e => {
+                console.log('error getting url',e)
+            })
+        }).catch(e=>{
+            console.log('error uploading image',e)
         })
     }
+    //Set message value on change
+    setMessage = (e) => {
+        this.setState({message:e.target.value})
     }
-    sendMessage = () => {
-        //console.log(this.props.match.params)
-        emitMessage(this.props.username, this.props.match.params.id.replace(/-/g,' '), this.state.message);
-        this.setState({ message: '' });
+    componentWillUnmount() {
+        this.setState({ isMounted: false });
     }
     render() {
         return (
-            <div className="container pt-5">
-                <div className="pb-5" style={{height:'60vh', overflowY:'scroll'}}>
+            <div className="container pt-4">
                 {
-                    this.state.chats.map((chat,i) => (
-                        <p key={i}>{chat.from===this.props.username?'You':chat.from}: {chat.message}</p>
-                    ))
+                    this.state.sendPhotoLoader? <LoaderComponent /> : null
                 }
-                </div>
-                <div className="row pt-5 text-center">
-                    <div className="col-sm-11">
-                        <input type="text" value={this.state.message} className="form-control" onChange={e=>this.setState({message:e.target.value})} />
-                    </div>
-                    <div className="col-sm-1">
-                        <button className="btn btn-info" onClick={this.sendMessage}>send</button>
-                    </div>
-                </div>
+                {
+                    this.props.username ? 
+                    <ChatComponent 
+                    chats={this.state.chats}
+                    message={this.state.message}
+                    disabledPhoto={this.state.disabledPhoto}
+                    uploadFile={this.uploadFile}
+                    sendMessage={this.sendMessage}
+                    setMessage={this.setMessage}
+                    disabledSend={this.state.disabledSend}
+                    username={this.props.username}
+                    />:<h1 className="text-center">Login to chat</h1>
+                }
             </div>
         );
     }
