@@ -19,8 +19,9 @@ const ChatComponent = (props) => {
                             onClick={()=>window.open(chat.message,'_blank')}
                             />
                         </div>
-                    ):
+                    ): (
                     <p key={i}>{chat.from===props.username?'You':chat.from}: {chat.message}</p>
+                    )
                 ))
             }
             </div>

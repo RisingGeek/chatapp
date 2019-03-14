@@ -89,7 +89,7 @@ class Chat extends Component {
         return (
             <div className="container pt-4">
                 {
-                    this.state.sendPhotoLoader? <LoaderComponent /> : null
+                    this.state.sendPhotoLoader ? <LoaderComponent /> : null
                 }
                 {
                     this.props.username ? 
