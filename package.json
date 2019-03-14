@@ -14,16 +14,18 @@
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
-    "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "https://chat-app-backend1.herokuapp.com/",
+  "homepage": "http://RisingGeek.github.io/chatapp",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -32,5 +34,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
+  }
 }
