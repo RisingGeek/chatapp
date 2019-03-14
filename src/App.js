@@ -35,7 +35,7 @@ class App extends Component {
   }
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
       <div className="App">
         <NavbarComponent loggedIn={this.props.loggedIn} logout={this.logout} />
           <Switch>
