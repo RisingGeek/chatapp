@@ -2,8 +2,16 @@ import React from 'react';
 
 const ChatComponent = (props) => {
     return (
-        <div>
-            <div className="p-5" id="chat" style={{height:'65vh', overflowY:'scroll', border: '1px solid rgba(0,0,0,0.5)'}}>
+        <div className="container">
+            <div className="row pb-1 mb-1" style={{borderBottom: '1px solid black'}}>
+                <div className="col-sm-2">
+                    <img src={props.userPhoto} className="img-fluid" style={{width:'50%'}} alt={props.chatname} />
+                </div>
+                <div className="col-sm-2">
+                    <p>{props.chatname}</p>
+                </div>
+            </div>
+            <div id="chat" style={{height:'65vh', overflowY:'scroll'}}>
             {
                 props.chats.map((chat,i) => (
                     chat.message.startsWith('https://firebasestorage.googleapis.com/v0/b/burger-128d8.appspot.com')? (
@@ -15,7 +23,7 @@ const ChatComponent = (props) => {
                                     chat.scrollTop = chat.scrollHeight;
                                 }
                             }} alt={chat.message} 
-                            style={{width:'20%', cursor: 'pointer'}}
+                            style={{width:'30%', cursor: 'pointer'}}
                             onClick={()=>window.open(chat.message,'_blank')}
                             />
                         </div>
@@ -26,13 +34,16 @@ const ChatComponent = (props) => {
             }
             </div>
             <div className="row pt-4 text-center">
-                <div className="col-sm-9">
+                <div className="col-sm-9 pb-2">
                     <input type="text" value={props.message} className="form-control" 
                     onChange={e => props.setMessage(e)} 
                     placeholder="Type message here..."
                     />
                 </div>
-                <div className="col-sm-2">
+                <div className="col-sm-1 pb-2">
+                    <button className="btn btn-info" onClick={props.sendMessage} disabled={props.disabledSend}>send</button>
+                </div>
+                <div className="col-sm-2 pb-2">
                     <label htmlFor="image" style={{cursor:'pointer'}}>
                         <i className="far fa-image" style={{fontSize:'20px'}}></i>
                         <p>Photo</p>
@@ -40,9 +51,6 @@ const ChatComponent = (props) => {
                     <input type="file" id="image" disabled={props.disabledPhoto} onChange={(e) => props.uploadFile(e)}
                     style={{opacity:'0'}}
                     />
-                </div>
-                <div className="col-sm-1">
-                    <button className="btn btn-info" onClick={props.sendMessage} disabled={props.disabledSend}>send</button>
                 </div>
             </div>
         </div>

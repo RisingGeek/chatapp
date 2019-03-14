@@ -1,3 +1,3 @@
-## Chat Application using ReactJS, Firebase and Node
+## Chat Application using ReactJS, Firebase and NodeJS
 
 Demo : https://risinggeek.github.io/chatapp/

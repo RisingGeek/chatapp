@@ -4,13 +4,13 @@ var socket;
 
 //Connect to socket
 function connectSocket(username) {
-    socket = io.connect('/');
+    socket = io.connect(process.env.REACT_APP_PROXY);
     socket.emit('register', username);
 }
 
 //Emit a message
 function emitMessage(fromValue, toValue, messageValue) {
-    axios.post(`/chat/addchat?from=${fromValue}&to=${toValue}&message=${messageValue}`)
+    axios.post(`${process.env.REACT_APP_PROXY}/chat/addchat?from=${fromValue}&to=${toValue}&message=${messageValue}`)
     .then(response => {
         //console.log(response);
         socket.emit('private', {

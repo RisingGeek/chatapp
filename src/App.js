@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './Containers/Home/Home';
 import Signup from './Containers/Signup/Signup';
 import NavbarComponent from './Components/Navbar/NavbarComponent';
@@ -35,7 +35,7 @@ class App extends Component {
   }
   render() {
     return (
-      <HashRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter>
       <div className="App">
         <NavbarComponent loggedIn={this.props.loggedIn} logout={this.logout} />
           <Switch>
@@ -45,7 +45,7 @@ class App extends Component {
             <Route path = '/chat/:id' component={ Chat } />
           </Switch>
       </div>
-      </HashRouter>
+      </BrowserRouter>
     );
   }
 }

@@ -13,23 +13,32 @@ class Chat extends Component {
         sendPhotoLoader: false,
         disabledSend: false,
         disabledPhoto: false,
-        isMounted: true
+        isMounted: true,
+        userPhoto: ''
     }
     componentDidMount()  {
         if(this.props.username) {
             //Get all the chats
-            this.state.isMounted && axios.get(`/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
+            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
             .then(response => {
                 this.setState({ chats: response.data.chats });
+            })
+            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getPhoto?username=${this.props.match.params.id}`)
+            .then(response => {
+                this.setState({ userPhoto: response.data.url });
             })
         }
     }
     componentDidUpdate(prevProps) {
         if(prevProps!==this.props) {
             //Get all the chats
-            this.state.isMounted && axios.get(`/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
+            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
             .then(response => {
                 this.setState({ chats: response.data.chats });
+            })
+            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getPhoto?username=${this.props.match.params.id}`)
+            .then(response => {
+                this.setState({ userPhoto: response.data.url });
             })
         }
         if(socket) {
@@ -37,7 +46,7 @@ class Chat extends Component {
             this.state.isMounted && socket.on(this.props.username, result => {
                 if(result.from === this.props.username || result.from === this.props.match.params.id.replace(/-/g,' ')) {
                     //Get all the chats
-                    this.state.isMounted && axios.get(`/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
+                    this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
                     .then(response => {
                         this.setState({
                             chats: response.data.chats, 
@@ -102,6 +111,8 @@ class Chat extends Component {
                     setMessage={this.setMessage}
                     disabledSend={this.state.disabledSend}
                     username={this.props.username}
+                    userPhoto={this.state.userPhoto}
+                    chatname={this.props.match.params.id.replace(/-/g,' ')}
                     />:<h1 className="text-center">Login to chat</h1>
                 }
             </div>

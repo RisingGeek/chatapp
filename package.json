@@ -20,12 +20,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
   "proxy": "https://chat-app-backend1.herokuapp.com/",
-  "homepage": "http://RisingGeek.github.io/chatapp",
   "eslintConfig": {
     "extends": "react-app"
   },

@@ -16,7 +16,7 @@ class Home extends Component {
     }
     componentDidMount() {
         //Get all users
-        this.state.isMounted && axios.get('/getusers')
+        this.state.isMounted && axios.get(process.env.REACT_APP_PROXY+'/getusers')
         .then(response => {
             this.setState({ users: response.data.users, usersLoader: false });
         })

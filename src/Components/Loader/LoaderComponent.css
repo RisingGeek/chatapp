@@ -21,3 +21,9 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+  @media(max-width:768px) {
+    .loader {
+      top: 40%;
+      left: 30%;
+    }
+  }

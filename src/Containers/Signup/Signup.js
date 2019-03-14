@@ -28,7 +28,7 @@ class Signup extends Component {
             })
 
             //Add user to database
-            this.state.isMounted && axios.post(`/adduser?username=${user.displayName}&photo=${user.photoURL}`)
+            this.state.isMounted && axios.post(`${process.env.REACT_APP_PROXY}/adduser?username=${user.displayName}&photo=${user.photoURL}`)
             .then(res => {
                 console.log(res.data);
                 this.props.history.push('/');

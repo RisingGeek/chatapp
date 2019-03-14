@@ -6,14 +6,15 @@ const UserComponent = props => {
     return (
         <div className="row pt-3">
             {
+                props.users ?
                 props.users.map(user => (
                     <div className="col-sm-4 text-center" key={user.username}>
                     {
                         props.username===user.username ? (
-                            <img src={user.photo} alt="user pic" className="img-fluid" style={{width:'80%'}} />
+                            <img src={user.photo} alt="user pic" className="img-fluid" style={{width:'60%'}} />
                         ) : (
                             <Link to={{pathname: `chat/${user.username.replace(/ /g,'-')}`}}>
-                                <img src={user.photo} alt="user pic" className="img-fluid" style={{width:'80%'}} />
+                                <img src={user.photo} alt="user pic" className="img-fluid" style={{width:'60%'}} />
                             </Link>
                         ) 
                     }
@@ -36,7 +37,7 @@ const UserComponent = props => {
                             ):null
                         }
                     </div>
-                ))
+                )):null
             }
         </div>
     );
