@@ -31,6 +31,7 @@ class Chat extends Component {
     }
     componentDidUpdate(prevProps) {
         if(prevProps!==this.props) {
+            setTimeout(()=>this.listenSocket(),1000)
             //Get all the chats
             this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
             .then(response => {
@@ -41,27 +42,24 @@ class Chat extends Component {
                 this.setState({ userPhoto: response.data.url });
             })
         }
-        if(socket) {
-            //Message received from backend socket
-            this.state.isMounted && socket.on(this.props.username, result => {
-                if(result.from === this.props.username || result.from === this.props.match.params.id.replace(/-/g,' ')) {
-                    //Get all the chats
-                    this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
-                    .then(response => {
-                        this.setState({
-                            chats: response.data.chats, 
-                            sendPhotoLoader: false, 
-                            disabledSend: false ,
-                            disabledPhoto: false
-                        });
-                        let chat = document.querySelector('#chat');
-                        if(chat) {
-                            chat.scrollTop = chat.scrollHeight;
-                        }
-                    })
+    }
+    //Listen to socket changes
+    listenSocket = () => {
+        this.state.isMounted && socket.on(this.props.username, result => {
+            if(result.from === this.props.username || result.from === this.props.match.params.id.replace(/-/g,' ')) {
+                //Get all the chats
+                this.setState({
+                    chats: this.state.chats.concat(result), 
+                    sendPhotoLoader: false, 
+                    disabledSend: false ,
+                    disabledPhoto: false
+                });
+                let chat = document.querySelector('#chat');
+                if(chat) {
+                    chat.scrollTop = chat.scrollHeight;
                 }
-            })
-        }
+            }
+        })
     }
     //Send message
     sendMessage = () => {

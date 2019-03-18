@@ -4,11 +4,9 @@ const ChatComponent = (props) => {
     return (
         <div className="container">
             <div className="row pb-1 mb-1" style={{borderBottom: '1px solid black'}}>
-                <div className="col-sm-2">
-                    <img src={props.userPhoto} className="img-fluid" style={{width:'50%'}} alt={props.chatname} />
-                </div>
-                <div className="col-sm-2">
-                    <p>{props.chatname}</p>
+                <div className="col-sm-12">
+                    <img src={props.userPhoto} className="img-fluid" style={{width:'5%',borderRadius:'50%'}} alt={props.chatname} />
+                    <span> {props.chatname}</span>
                 </div>
             </div>
             <div id="chat" style={{height:'65vh', overflowY:'scroll'}}>

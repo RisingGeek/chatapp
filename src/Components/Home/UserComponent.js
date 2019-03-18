@@ -11,10 +11,10 @@ const UserComponent = props => {
                     <div className="col-sm-4 text-center" key={user.username}>
                     {
                         props.username===user.username ? (
-                            <img src={user.photo} alt="user pic" className="img-fluid" style={{width:'60%'}} />
+                            <img src={user.photo} alt="user pic" className="img-fluid" style={{width:'50%',borderRadius:'50%'}} />
                         ) : (
                             <Link to={{pathname: `chat/${user.username.replace(/ /g,'-')}`}}>
-                                <img src={user.photo} alt="user pic" className="img-fluid" style={{width:'60%'}} />
+                                <img src={user.photo} alt="user pic" className="img-fluid" style={{width:'50%',borderRadius:'50%'}} />
                             </Link>
                         ) 
                     }
