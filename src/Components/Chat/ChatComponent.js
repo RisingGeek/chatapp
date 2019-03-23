@@ -2,7 +2,7 @@ import React from 'react';
 
 const ChatComponent = (props) => {
     return (
-        <div className="container">
+        <div className="container" style={{overflow:'hidden'}}>
             <div className="row pb-1 mb-1" style={{borderBottom: '1px solid black'}}>
                 <div className="col-sm-12">
                     <img src={props.userPhoto} className="img-fluid" style={{width:'5%',borderRadius:'50%'}} alt={props.chatname} />

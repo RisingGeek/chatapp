@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const NavbarComponent = (props) => {
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{height:'10vh'}}>
             <Link to={{pathname: '/'}} className="navbar-brand" href="#">Chat App</Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
@@ -17,13 +17,7 @@ const NavbarComponent = (props) => {
                 {
                     props.loggedIn?null:
                     <li className="nav-item">
-                        <Link to={{pathname: '/login'}} className="nav-link">Login</Link>
-                    </li>
-                }
-                {
-                    props.loggedIn?null:
-                    <li className="nav-item">
-                        <Link to={{pathname: '/signup'}} className="nav-link">Signup</Link>
+                        <Link to={{pathname: '/signin'}} className="nav-link">Signin</Link>
                     </li>
                 }
                 {

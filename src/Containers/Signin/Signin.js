@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SignupComponent from '../../Components/Signup/SignupComponent';
+import SigninComponent from '../../Components/Signin/SigninComponent';
 import firebase from '../../Firebase/firebase';
 import 'firebase/auth';
 import 'firebase/database';
@@ -48,7 +48,7 @@ class Signup extends Component {
                 {
                     this.props.username ? 
                     <h1 className="text-center">You are already logged in.</h1> : 
-                    <SignupComponent signup={this.signup} heading={this.props.location.pathname} />
+                    <SigninComponent signup={this.signup} heading={this.props.location.pathname} />
                 }
             </div>
         );
