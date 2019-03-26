@@ -27,6 +27,7 @@ class Chat extends Component {
             .then(response => {
                 this.setState({ userPhoto: response.data.url });
             })
+            this.listenSocket();
         }
     }
     componentDidUpdate(prevProps) {
@@ -45,9 +46,9 @@ class Chat extends Component {
     }
     //Listen to socket changes
     listenSocket = () => {
+        console.log('I am listening')
         this.state.isMounted && socket.on(this.props.username, result => {
             if(result.from === this.props.username || result.from === this.props.match.params.id.replace(/-/g,' ')) {
-                //Get all the chats
                 this.setState({
                     chats: this.state.chats.concat(result), 
                     sendPhotoLoader: false, 
@@ -64,8 +65,8 @@ class Chat extends Component {
     //Send message
     sendMessage = () => {
         //Emit message to backend socket
-        this.state.isMounted && emitMessage(this.props.username, this.props.match.params.id.replace(/-/g,' '), this.state.message);
         this.setState({ message: '', sendPhotoLoader: true, disabledSend: true });
+        this.state.isMounted && emitMessage(this.props.username, this.props.match.params.id.replace(/-/g,' '), this.state.message);
     }
     //Upload image to Firebase Storage
     uploadFile = (e) => {
