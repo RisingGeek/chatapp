@@ -46,7 +46,6 @@ class Chat extends Component {
     }
     //Listen to socket changes
     listenSocket = () => {
-        console.log('I am listening')
         this.state.isMounted && socket.on(this.props.username, result => {
             if(result.from === this.props.username || result.from === this.props.match.params.id.replace(/-/g,' ')) {
                 this.setState({
