@@ -1,0 +1,24 @@
+.chat-component {
+    height: 94vh;
+}
+.rounded {
+    border-radius: 50%;
+}
+.allchats {
+    overflow-y: scroll;
+    height: 94vh;
+}
+.chatuser {
+    border-bottom: 1px solid lightgray;
+}
+* {
+    text-decoration: none !important;
+}
+@media(max-width: 768px) {
+    .allchats {
+        text-align: center;
+    }
+    .allchats img {
+        width: 50%;
+    }
+}

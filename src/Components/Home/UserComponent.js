@@ -13,7 +13,7 @@ const UserComponent = props => {
                         props.username===user.username ? (
                             <img src={user.photo} alt="user pic" className="img-fluid" style={{width:'50%',borderRadius:'50%'}} />
                         ) : (
-                            <Link to={{pathname: `chat/${user.username.replace(/ /g,'-')}`}}>
+                            <Link to={{pathname: `chats/${user.username.replace(/ /g,'-')}`}}>
                                 <img src={user.photo} alt="user pic" className="img-fluid" style={{width:'50%',borderRadius:'50%'}} />
                             </Link>
                         ) 
@@ -22,7 +22,7 @@ const UserComponent = props => {
                         {
                             props.username? (
                             props.username===user.username?<p>You</p>:
-                            <p><Link to={{pathname: `chat/${user.username.replace(/ /g,'-')}`}}>chat</Link></p>
+                            <p><Link to={{pathname: `chats/${user.username.replace(/ /g,'-')}`}}>chat</Link></p>
                             ):null
                         }
                         {

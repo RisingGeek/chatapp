@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { socket, emitMessage } from '../../api';
 import axios from 'axios';
@@ -17,28 +17,28 @@ class Chat extends Component {
         userPhoto: ''
     }
     componentDidMount()  {
+        setTimeout(this.listenSocket,1000);
         if(this.props.username) {
             //Get all the chats
-            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
+            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.id.replace(/-/g,' ')}`)
             .then(response => {
                 this.setState({ chats: response.data.chats });
             })
-            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getPhoto?username=${this.props.match.params.id}`)
+            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getPhoto?username=${this.props.id}`)
             .then(response => {
                 this.setState({ userPhoto: response.data.url });
             })
-            this.listenSocket();
         }
     }
     componentDidUpdate(prevProps) {
         if(prevProps!==this.props) {
-            setTimeout(()=>this.listenSocket(),1000)
+            // setTimeout(()=>this.listenSocket(),1000)
             //Get all the chats
-            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.match.params.id.replace(/-/g,' ')}`)
+            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.id.replace(/-/g,' ')}`)
             .then(response => {
                 this.setState({ chats: response.data.chats });
             })
-            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getPhoto?username=${this.props.match.params.id}`)
+            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getPhoto?username=${this.props.id}`)
             .then(response => {
                 this.setState({ userPhoto: response.data.url });
             })
@@ -47,7 +47,8 @@ class Chat extends Component {
     //Listen to socket changes
     listenSocket = () => {
         this.state.isMounted && socket.on(this.props.username, result => {
-            if(result.from === this.props.username || result.from === this.props.match.params.id.replace(/-/g,' ')) {
+            console.log('msg reveived')
+            if(result.from === this.props.username || result.from === this.props.id.replace(/-/g,' ')) {
                 this.setState({
                     chats: this.state.chats.concat(result), 
                     sendPhotoLoader: false, 
@@ -65,7 +66,7 @@ class Chat extends Component {
     sendMessage = () => {
         //Emit message to backend socket
         this.setState({ message: '', sendPhotoLoader: true, disabledSend: true });
-        this.state.isMounted && emitMessage(this.props.username, this.props.match.params.id.replace(/-/g,' '), this.state.message);
+        this.state.isMounted && emitMessage(this.props.username, this.props.id.replace(/-/g,' '), this.state.message);
     }
     //Upload image to Firebase Storage
     uploadFile = (e) => {
@@ -94,7 +95,7 @@ class Chat extends Component {
     }
     render() {
         return (
-            <div className="container pt-4">
+            <Fragment>
                 {
                     this.state.sendPhotoLoader ? <LoaderComponent /> : null
                 }
@@ -110,10 +111,10 @@ class Chat extends Component {
                     disabledSend={this.state.disabledSend}
                     username={this.props.username}
                     userPhoto={this.state.userPhoto}
-                    chatname={this.props.match.params.id.replace(/-/g,' ')}
+                    chatname={this.props.id.replace(/-/g,' ')}
                     />:<h1 className="text-center">Login to chat</h1>
                 }
-            </div>
+            </Fragment>
         );
     }
 }

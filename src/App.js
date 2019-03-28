@@ -4,7 +4,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './Containers/Home/Home';
 import Signin from './Containers/Signin/Signin';
 import NavbarComponent from './Components/Navbar/NavbarComponent';
-import Chat from './Containers/Chat/Chat';
+// import Chat from './Containers/Chat/Chat';
+import Chats from './Containers/Chats/Chats';
 import { connect } from 'react-redux'; 
 import firebase from './Firebase/firebase';
 import 'firebase/auth';
@@ -42,7 +43,8 @@ class App extends Component {
             <Route path = '/' exact component={ Home } />
             {/* <Route path = '/login' component={ Signup } /> */}
             <Route path = '/signin' component={ Signin } />
-            <Route path = '/chat/:id' component={ Chat } />
+            <Route path='/chats' exact component={ Chats } />
+            <Route path = '/chats/:id' component={ Chats } />
           </Switch>
       </div>
       </BrowserRouter>

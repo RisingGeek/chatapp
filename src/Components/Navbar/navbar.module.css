@@ -1,0 +1,25 @@
+nav {
+    background-color: seagreen;
+    height: 6vh !important;
+}
+.mobileshow {
+    display: none;
+}
+.mobileshow ul {
+    list-style-type: none;
+    height: 10vh !important;
+}
+.mobileshow ul li {
+    float: left;
+}
+@media(max-width:768px) {
+    nav {
+        height: 10vh !important;
+    }
+    .mobileshow {
+        display: block;
+    }
+    .pcshow {
+        display: none;
+    }
+}

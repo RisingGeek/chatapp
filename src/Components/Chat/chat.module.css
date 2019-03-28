@@ -1,0 +1,54 @@
+.chatname {
+    background-color: #E8E8E8;
+    height: 10vh;
+}
+.chats {
+    height: 74vh;
+    overflow-y: scroll;
+    background: lightgray;
+}
+.send {
+    height: 10vh !important;
+    background-color: #E8E8E8;
+    padding-top: 1.5%;
+}
+.sendbtn {
+    background: seagreen;
+    border-radius: 6px;
+}
+.chatbubbleother {
+    border-radius: 10px;
+    background-color: gray;
+    color: white;
+}
+.chatbubbleme {
+    border-radius: 10px;
+    background-color: seagreen;
+    color: white;
+}
+.chatimg {
+    width: 80%;
+    cursor: pointer
+}
+.userimg {
+    width: 5%;
+    border-radius: 50%;
+}
+.flexrow {
+    display: flex;
+    justify-content: space-around;
+}
+.col1 {
+    width: 70%;
+}
+@media(max-width:768px) {
+    .chatimg {
+        width: 50%;
+    }
+    .chats {
+        height: 70vh;
+    }
+    .userimg {
+        width: 10%;
+    }
+}
