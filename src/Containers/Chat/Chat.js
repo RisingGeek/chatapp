@@ -20,7 +20,7 @@ class Chat extends Component {
         setTimeout(this.listenSocket,1000);
         if(this.props.username) {
             //Get all the chats
-            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.id.replace(/-/g,' ')}`)
+            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.id.replace(/-/g,' ')}&token=${this.props.token}`)
             .then(response => {
                 this.setState({ chats: response.data.chats });
             })
@@ -34,7 +34,7 @@ class Chat extends Component {
         if(prevProps!==this.props) {
             // setTimeout(()=>this.listenSocket(),1000)
             //Get all the chats
-            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.id.replace(/-/g,' ')}`)
+            this.state.isMounted && axios.get(`${process.env.REACT_APP_PROXY}/chat/getchats?from=${this.props.username}&to=${this.props.id.replace(/-/g,' ')}&token=${this.props.token}`)
             .then(response => {
                 this.setState({ chats: response.data.chats });
             })
@@ -66,7 +66,7 @@ class Chat extends Component {
     sendMessage = () => {
         //Emit message to backend socket
         this.setState({ message: '', sendPhotoLoader: true, disabledSend: true });
-        this.state.isMounted && emitMessage(this.props.username, this.props.id.replace(/-/g,' '), this.state.message);
+        this.state.isMounted && emitMessage(this.props.username, this.props.id.replace(/-/g,' '), this.state.message, this.props.token);
     }
     //Upload image to Firebase Storage
     uploadFile = (e) => {

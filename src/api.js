@@ -9,8 +9,8 @@ function connectSocket(username) {
 }
 
 //Emit a message
-function emitMessage(fromValue, toValue, messageValue) {
-    axios.post(`${process.env.REACT_APP_PROXY}/chat/addchat?from=${fromValue}&to=${toValue}&message=${messageValue}`)
+function emitMessage(fromValue, toValue, messageValue, token) {
+    axios.post(`${process.env.REACT_APP_PROXY}/chat/addchat?from=${fromValue}&to=${toValue}&message=${messageValue}&token=${token}`)
     .then(response => {
         //console.log(response);
         socket.emit('private', {

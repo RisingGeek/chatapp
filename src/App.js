@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import firebase from './Firebase/firebase';
 import 'firebase/auth';
 import { socket, connectSocket } from './api';
+import axios from 'axios';
 
 class App extends Component {
   componentDidUpdate(prevProps) {
@@ -26,6 +27,13 @@ class App extends Component {
   //Logout from application
   logout = () => {
     //Firebase sign out function
+    axios.post(`${process.env.REACT_APP_PROXY}/deleteToken`,
+    {
+      username:this.props.username,
+      token: this.props.token
+    }).then(response => {
+      console.log(response)
+    })
     firebase.auth().signOut().then(() => {
       this.props.logoutUser();
     }).catch(error => {
@@ -55,7 +63,8 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     loggedIn: state.loggedIn,
-    username: state.username
+    username: state.username,
+    token: state.token
   }
 }
 

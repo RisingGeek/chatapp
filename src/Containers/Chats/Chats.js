@@ -33,7 +33,7 @@ class Chats extends Component {
         this.setState({ isMounted: false });
     }
     getAllUsersChats = () => {
-        axios.get(`${process.env.REACT_APP_PROXY}/chat/getAllUsersChats?user=${this.props.username}`)
+        axios.get(`${process.env.REACT_APP_PROXY}/chat/getAllUsersChats?user=${this.props.username}&token=${this.props.token}`)
         .then(res => {
             axios.get(`${process.env.REACT_APP_PROXY}/getusers`).then(allUsers => {
                 res.data.allUsersChat.forEach(chat => {
@@ -63,7 +63,8 @@ class Chats extends Component {
 
 const mapStateToProps = state => {
     return {
-        username: state.username
+        username: state.username,
+        token: state.token
     }
 }
 
