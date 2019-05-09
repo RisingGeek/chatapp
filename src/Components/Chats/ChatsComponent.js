@@ -17,6 +17,7 @@ const ChatComponent = props => {
             <div className={cx('row')}>
                 <div className={cx('col-sm-4', styles.allchats)}>
                     {
+                        props.allUsersChat.length ? 
                         props.allUsersChat.map(chat => (
                             <Link key={chat._id} to={
                                 props.username!==chat.userOne?
@@ -55,7 +56,10 @@ const ChatComponent = props => {
                                 <div className={styles.border}></div>
                             </div>
                             </Link>
-                        ))
+                        )) :
+                        <div className="text-center p-4">
+                            <h3>No chats yet.</h3>
+                        </div>
                     }
                 </div>
                 <div className={cx('col-sm-8')}>

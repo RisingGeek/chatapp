@@ -54,14 +54,22 @@ const ChatComponent = (props) => {
                             <div className='col-sm-5'>
                             {
                                 chat.from===props.username ? null:
-                                <p className={cx('p-2',styles.chatbubbleother)}>{chat.message}</p>
+                                <p className={cx('p-2',styles.chatbubbleother)}>{chat.message}
+                                    <span style={{float:'right'}}>
+                                        <sub>{new Date(chat.date).getHours()}: {new Date(chat.date).getMinutes()}</sub>
+                                    </span>
+                                </p>
                             }
                             </div>
                             <div className='col-sm-2'></div>
                             <div className='col-sm-5'>
                             {
                                 chat.from===props.username ?
-                                <p className={cx('p-2',styles.chatbubbleme)}>{chat.message}</p>
+                                <p className={cx('p-2',styles.chatbubbleme)}>{chat.message} 
+                                    <span style={{float:'right'}}>
+                                        <sub>{new Date(chat.date).getHours()}: {new Date(chat.date).getMinutes()}</sub>
+                                    </span>
+                                </p>
                                 : null
                             }
                             </div>

@@ -47,7 +47,6 @@ class Chat extends Component {
     //Listen to socket changes
     listenSocket = () => {
         this.state.isMounted && socket.on(this.props.username, result => {
-            console.log('msg reveived')
             if(result.from === this.props.username || result.from === this.props.id.replace(/-/g,' ')) {
                 this.setState({
                     chats: this.state.chats.concat(result), 
