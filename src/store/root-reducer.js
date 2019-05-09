@@ -23,6 +23,11 @@ const rootReducer = (state=initialState, action) => {
                 username: null,
                 photo: null
             };
+        case 'NOT_AUTHORIZED':
+            return {
+                ...state,
+                loggedIn: false
+            }
         default:
             return state;
     }

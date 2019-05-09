@@ -12,6 +12,8 @@ const ChatComponent = props => {
     }
     return (
         <div className={cx(['container-fluid'], styles['chat-component'])}>
+        {
+            props.loggedIn?
             <div className={cx('row')}>
                 <div className={cx('col-sm-4', styles.allchats)}>
                     {
@@ -63,7 +65,14 @@ const ChatComponent = props => {
                     ):null
                 }
                 </div>
+            </div> :
+            <div className="p-5">
+                <h3 className="text-center">Not an authorized user. Login 
+                    <Link to={{pathname: '/signin'}}> here </Link>
+                    to continue
+                </h3>
             </div>
+        }
         </div>
     );
 }

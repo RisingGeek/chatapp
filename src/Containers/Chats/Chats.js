@@ -35,6 +35,10 @@ class Chats extends Component {
     getAllUsersChats = () => {
         axios.get(`${process.env.REACT_APP_PROXY}/chat/getAllUsersChats?user=${this.props.username}&token=${this.props.token}`)
         .then(res => {
+            if(res.data === "not authorised") {
+                this.props.notAuthorized();
+                return;
+            }
             axios.get(`${process.env.REACT_APP_PROXY}/getusers`).then(allUsers => {
                 res.data.allUsersChat.forEach(chat => {
                     let userOne = allUsers.data.users.find(user => chat.userOne===user.username);
@@ -56,7 +60,8 @@ class Chats extends Component {
             allUsersChat={this.state.allUsersChat} 
             username={this.props.username}
             id={this.props.match.params.id}
-            connectedUsers={this.state.connectedUsers} />
+            connectedUsers={this.state.connectedUsers}
+            loggedIn={this.props.loggedIn} />
         );
     }
 }
@@ -64,8 +69,17 @@ class Chats extends Component {
 const mapStateToProps = state => {
     return {
         username: state.username,
-        token: state.token
+        token: state.token,
+        loggedIn: state.loggedIn
     }
 }
 
-export default connect(mapStateToProps)(Chats);
+const mapDispatchToProps = dispatch => {
+    return {
+        notAuthorized: () => {
+            dispatch({ type: 'NOT_AUTHORIZED'});
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chats);
