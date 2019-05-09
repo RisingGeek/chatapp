@@ -46,7 +46,7 @@ class Signup extends Component {
         return (
             <div>
                 {
-                    this.props.token ? 
+                    this.props.loggedIn ? 
                     <h1 className="text-center">You are already logged in.</h1> : 
                     <SigninComponent signup={this.signup} heading={this.props.location.pathname} />
                 }

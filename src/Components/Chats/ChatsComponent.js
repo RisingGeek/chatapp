@@ -71,10 +71,10 @@ const ChatComponent = props => {
                 </div>
             </div> :
             <div className="p-5">
-                <h3 className="text-center">Not an authorized user. Login 
-                    <Link to={{pathname: '/signin'}}> here </Link>
-                    to continue
-                </h3>
+                <h2 className="text-center">Not an authorized user. Maybe you logged in from somewhere else.
+                    <br />
+                    <Link to={{pathname: '/signin'}}>Login  here to continue</Link>
+                </h2>
             </div>
         }
         </div>
