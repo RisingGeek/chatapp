@@ -6,7 +6,7 @@ import Signin from './Containers/Signin/Signin';
 import NavbarComponent from './Components/Navbar/NavbarComponent';
 // import Chat from './Containers/Chat/Chat';
 import Chats from './Containers/Chats/Chats';
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
 import firebase from './Firebase/firebase';
 import 'firebase/auth';
 import { socket, connectSocket } from './api';
@@ -14,30 +14,31 @@ import axios from 'axios';
 
 class App extends Component {
   componentDidUpdate(prevProps) {
-    if(this.props!==prevProps) {
+    if (this.props !== prevProps) {
       connectSocket(this.props.username);
-      if(socket) {
+      console.log(socket)
+      if (socket) {
         //Get online users
         socket.on('onlineusers', connectedUsers => {
-            localStorage.setItem('connectedUsers', Object.keys(connectedUsers));
+          localStorage.setItem('connectedUsers', Object.keys(connectedUsers));
         })
-      } 
+      }
     }
   }
   //Logout from application
   logout = () => {
     //Firebase sign out function
     axios.post(`${process.env.REACT_APP_PROXY}/deleteToken`,
-    {
-      username:this.props.username,
-      token: this.props.token
-    }).then(response => {
-      console.log(response)
-    })
+      {
+        username: this.props.username,
+        token: this.props.token
+      }).then(response => {
+        console.log(response)
+      })
     firebase.auth().signOut().then(() => {
       this.props.logoutUser();
     }).catch(error => {
-      console.log('error occured during logout',error);
+      console.log('error occured during logout', error);
     })
     //Clear localStorage
     localStorage.clear();
@@ -45,16 +46,16 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-      <div className="App">
-        <NavbarComponent loggedIn={this.props.loggedIn} logout={this.logout} />
+        <div className="App">
+          <NavbarComponent loggedIn={this.props.loggedIn} logout={this.logout} />
           <Switch>
-            <Route path = '/' exact component={ Home } />
+            <Route path='/' exact component={Home} />
             {/* <Route path = '/login' component={ Signup } /> */}
-            <Route path = '/signin' component={ Signin } />
-            <Route path='/chats' exact component={ Chats } />
-            <Route path = '/chats/:id' component={ Chats } />
+            <Route path='/signin' component={Signin} />
+            <Route path='/chats' exact component={Chats} />
+            <Route path='/chats/:id' component={Chats} />
           </Switch>
-      </div>
+        </div>
       </BrowserRouter>
     );
   }
@@ -71,7 +72,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     logoutUser: () => {
-      dispatch({ type: 'LOGOUT'});
+      dispatch({ type: 'LOGOUT' });
     }
   }
 }
