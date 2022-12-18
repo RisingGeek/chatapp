@@ -4,7 +4,7 @@ var socket;
 
 //Connect to socket
 function connectSocket(username) {
-    socket = io.connect("http://localhost:8080/", {
+    socket = io.connect(process.env.REACT_APP_DOMAIN, {
         path: "/chatapp/socket.io"
     });
     socket.emit('register', username);
